@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Queueing System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f8f9fa;
+    }
+
+    header {
+      background-color: #007bff;
+      color: white;
+      padding: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      margin: 20px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .queue-form {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .queue-list {
+      margin-top: 20px;
+    }
+
+    .queue-item {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .queue-item span {
+      font-size: 16px;
+    }
+
+    .queue-item button {
+      width: auto;
+      padding: 5px 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Smart Queueing System for Electricians</h1>
+  </header>
+  <div class="container">
+    <div class="queue-form">
+      <label for="name">Name:</label>
+      <input type="text" id="name" placeholder="Enter your name">
+
+      <label for="service">Service Required:</label>
+      <select id="service">
+        <option value="installation">Installation</option>
+        <option value="repair">Repair</option>
+        <option value="maintenance">Maintenance</option>
+      </select>
+
+      <button onclick="addToQueue()">Add to Queue</button>
+    </div>
+
+    <div class="queue-list" id="queueList">
+      <h3>Current Queue</h3>
+    </div>
+  </div>
+
+  <script>
+    const queue = [];
+
+    function addToQueue() {
+      const name = document.getElementById('name').value;
+      const service = document.getElementById('service').value;
+
+      if (name === '' || service === '') {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const newQueueItem = { name, service };
+      queue.push(newQueueItem);
+      document.getElementById('name').value = '';
+      updateQueueList();
+    }
+
+    function removeFromQueue(index) {
+      queue.splice(index, 1);
+      updateQueueList();
+    }
+
+    function updateQueueList() {
+      const queueList = document.getElementById('queueList');
+      queueList.innerHTML = '<h3>Current Queue</h3>';
+
+      queue.forEach((item, index) => {
+        const queueItem = document.createElement('div');
+        queueItem.className = 'queue-item';
+        queueItem.innerHTML = `
+          <span>${index + 1}. ${item.name} - ${item.service}</span>
+          <button onclick="removeFromQueue(${index})">Remove</button>
+        `;
+        queueList.appendChild(queueItem);
+      });
+    }
+  </script>
+</body>
+</html>
